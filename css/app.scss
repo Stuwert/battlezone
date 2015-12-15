@@ -1,0 +1,23 @@
+@import 'reset';
+@import 'dragula.min'
+
+$actor-size: 300px;
+$actor-background: grey;
+$actor-border: 15px;
+
+main{
+  display: flex;
+  flex-wrap: row;
+}
+
+section{
+  display: flex;
+  flex-wrap: column;
+}
+
+div{
+  width: $actor-size;
+  height: $actor-size;
+  background-color: grey;
+  border-radius: $actor-border;
+}
