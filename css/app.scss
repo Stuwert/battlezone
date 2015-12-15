@@ -1,23 +1,32 @@
 @import 'reset';
-@import 'dragula.min'
 
-$actor-size: 300px;
+
+$actor-width: 200px;
+$actor-height: 120px;
 $actor-background: grey;
 $actor-border: 15px;
 
 main{
   display: flex;
-  flex-wrap: row;
+  flex-direction: row;
+}
+
+canvas{
+  height: 300px;
+  width: 300px;
+  background-color: black;
 }
 
 section{
   display: flex;
-  flex-wrap: column;
+  flex-direction: column;
+  width: $actor-width / 4 + $actor-width;
+  height: auto;
 }
 
 div{
-  width: $actor-size;
-  height: $actor-size;
-  background-color: grey;
+  width: $actor-width;
+  height: $actor-height;
+  background-color: $actor-background;
   border-radius: $actor-border;
 }
