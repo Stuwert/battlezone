@@ -123,7 +123,10 @@ function renderer(inputName, divClass){
 
 function activateDragging(){
   var player1draginto = dragula([document.querySelector("#player1"), document.querySelector(".player1")],{
-    copy: true
+    copy: true,
+    invalid: function (el){
+      return el.className.includes("fainted");
+    }
   });
   var player1dragoutof = dragula([document.querySelector(".player1")], {
     removeOnSpill: true
@@ -148,8 +151,13 @@ function activateDragging(){
   })
 
   var player2draginto = dragula([document.querySelector("#player2"), document.querySelector(".player2")],{
-    copy: true
+    copy: true,
+    invalid: function (el){
+      return el.className.includes("fainted");
+    }
+
   });
+
   var player2dragoutof = dragula([document.querySelector(".player2")], {
     removeOnSpill: true
   });

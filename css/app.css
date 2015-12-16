@@ -189,4 +189,7 @@ button {
   .gu-mirror .posters [class^="attack"] {
     display: none; }
 
+.fainted {
+  opacity: .5; }
+
 /*# sourceMappingURL=app.css.map */

@@ -15,10 +15,11 @@ function fightLoop(character1, character2){
   calculateHealth(character1, character1Damage);
   calculateHealth(character2, character2Damage);
   printScreen(character1, character2Damage, character2, character1Damage);
-  if (!detectWinner(character1, character2)){
+  var winner = detectWinner(character1, character2);
+  if (!winner){
     fightLoop(character1, character2);
   }else{
-    console.log(detectWinner(character1, character2))
+    console.log(winner);
   }
 }
 
@@ -65,7 +66,9 @@ function detectWinner(character1, character2){
 }
 
 function removePlayer(charname){
-  $("." + charname).empty();
+  var num = $("." + charname).children('div').attr('class');
+  $("#" + charname).find('[class="'+ num+'"]').addClass('fainted');
+  $('.' + charname).empty();
 }
 
 function damageDealt(attack, armor){
