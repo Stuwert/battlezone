@@ -1,32 +1,161 @@
 @import 'reset';
 
+$div-radius : 15px;
+$interior-flex: 7vw;
+$section-flex: 3vw;
 
-$actor-width: 200px;
-$actor-height: 120px;
-$actor-background: grey;
-$actor-border: 15px;
 
 main{
+  position: fixed;
+  height: 100vh;
+  width: 70vw;
+  margin-left: 15vw;
+}
+
+.background{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
+}
+
+h1{
+  margin-top: 30px;
+  font-size: 68px;
+  text-align: center;
+}
+
+main{
+  section{
+    width: 90%;
+    margin: 2.5vh 5%;
+    height: 80vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    h2{
+      color: black;
+      font-size: 20px;
+      position: relative;
+    }
+    h2.player1{
+      left: $section-flex;
+    }
+    h2.player2{
+      right: $section-flex;
+      text-align: right;
+    }
+    section{
+      width: auto;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+#canvas{
+  background-color: black;
+  height: 60vh;
+  width: 20vw;
+  margin: 0 auto;
+}
+
+button{
+  height: 30px;
+  width: 100px;
+  margin: 0 auto;
+}
+
+.active{
+  width: 17vw;
+  height: 17vh;
+  border-radius: $div-radius;
+  background-color: blue;
+  align-self: flex-end;
+  bottom: 20vh;
+  position: relative;
+
+}
+
+div.player1{
+  left: $interior-flex;
+}
+div.player2{
+  right: $interior-flex;
+}
+
+.background{
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
-canvas{
-  height: 300px;
-  width: 300px;
-  background-color: black;
+section.player1{
+  margin-left: $section-flex;
+  align-items: flex-start;
+
 }
 
-section{
+section.player2{
+  margin-right: $section-flex;
+  align-items: flex-end;
+}
+
+.bench{
   display: flex;
   flex-direction: column;
-  width: $actor-width / 4 + $actor-width;
-  height: auto;
+  height: 100vh;
+  justify-content: space-around;
+  div{
+    width: 100px;
+    height: 100px;
+    background-color: grey;
+    border-radius: $div-radius;
+  }
 }
 
-div{
-  width: $actor-width;
-  height: $actor-height;
-  background-color: $actor-background;
-  border-radius: $actor-border;
+.turn{
+  border-radius: $div-radius;
+  background-color: dimgrey;
 }
+
+//
+// $actor-width: 200px;
+// $actor-height: 120px;
+// $actor-background: grey;
+// $actor-border: 15px;
+//
+// main{
+//   display: flex;
+//   flex-direction: row;
+// }
+//
+// canvas{
+//   height: 200px;
+//   width: 400px;
+//   background-color: black;
+// }
+//
+// section{
+//   display: flex;
+//   flex-direction: column;
+//   height: auto;
+// }
+//
+// .active{
+//   div{
+//     width: $actor-width * 2;
+//     height: $actor-height * 2;
+//   }
+// }
+//
+// div{
+//   width: $actor-width;
+//   height: $actor-height;
+//   background-color: $actor-background;
+//   border-radius: $actor-border;
+// }
