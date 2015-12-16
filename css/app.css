@@ -134,4 +134,13 @@ section.player2 {
 .hidden {
   display: none; }
 
+.bench div .poster {
+  display: none; }
+
+.gu-mirror .poster {
+  display: none; }
+
+.active div .poster {
+  display: inline-block; }
+
 /*# sourceMappingURL=app.css.map */
