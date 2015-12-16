@@ -10,10 +10,19 @@ var gameObj = {
 
 $(document).ready(function(){
   $(document).on("keydown", "input", addToParty);
-  $('.act1').on("click", "[class^='attack']", function(){
-    console.log(this);
-  })
+  $('.player1').on('click', '[class^="attack"]', selectAttack);
+  $('.player2').on('click', '[class^="attack"]', selectAttack);
 })
+
+function selectAttack(){
+  $(this).css({"opacity" : "0.5"});
+  $(this).siblings().css({"opacity" : 1});
+  var attacknum = $(this).attr('class');
+  var playerchar = $(this).parent().parent().attr('class');
+  var playernum = $(this).parent().parent().parent().attr('class');
+  attackstatus[playernum] = gameObj[playernum][playerchar][attacknum];
+  console.log(attackstatus);
+}
 
 function addToParty(key){
   var input = $('input').val();
@@ -77,10 +86,10 @@ function renderer(inputName, divClass){
 }
 
 function activateDragging(){
-  var player1draginto = dragula([document.querySelector("#player1"), document.querySelector(".act1")],{
+  var player1draginto = dragula([document.querySelector("#player1"), document.querySelector(".player1")],{
     copy: true
   });
-  var player1dragoutof = dragula([document.querySelector(".act1")], {
+  var player1dragoutof = dragula([document.querySelector(".player1")], {
     removeOnSpill: true
   });
 
@@ -102,10 +111,10 @@ function activateDragging(){
     $('#fight').children().addClass('hidden');
   })
 
-  var player2draginto = dragula([document.querySelector("#player2"), document.querySelector(".act2")],{
+  var player2draginto = dragula([document.querySelector("#player2"), document.querySelector(".player2")],{
     copy: true
   });
-  var player2dragoutof = dragula([document.querySelector(".act2")], {
+  var player2dragoutof = dragula([document.querySelector(".player2")], {
     removeOnSpill: true
   });
 
