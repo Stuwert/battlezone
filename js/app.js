@@ -1,5 +1,4 @@
 // dragula([document.querySelector(".player1"), document.querySelector(".player2")]);
-var array = [{name: "Bing Bong", img:"img/bb.jpg", poster:"img/poster.png", status:"bench"}, {name: "Bing Bong"}, {name: "Bing Bong"}];
 var turnstatus = "player1";
 
 var gameObj = {
@@ -21,17 +20,52 @@ function selectAttack(){
   var playerchar = $(this).parent().parent().attr('class');
   var playernum = $(this).parent().parent().parent().attr('class');
   attackstatus[playernum] = gameObj[playernum][playerchar][attacknum];
-  console.log(attackstatus);
+  revealFightButton();
+}
+
+function revealFightButton(){
+  for (attacks in attackstatus){
+    if (attackstatus[attacks] === null){
+      return;
+    }
+  }
+  $('.input').animate({"height" : "50", "width" : "200"}, 500);
+  $('#printout').removeClass('hidden');
+  $('#fight').find('p').addClass('hidden');
+  $('#fight').find('button').removeClass('hidden');
 }
 
 function addToParty(key){
   var input = $('input').val();
   if (key.keyCode === 13){
-    var inputz = nextAvailable(gameObj[turnstatus]);
-    gameObj[turnstatus][inputz] = new newGameObj(array[input].name, array[input].img, array[input].status, array[input].poster, array[input].poster);
-    renderer(turnstatus, inputz);
-    fullCheck();
+    var parameterz = {
+      query: input
+    }
+    tmdb.call("/search/person", parameterz, response, failure);
+
+
+    // newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2)
+    // renderer(turnstatus, inputz);
+    // fullCheck();
   }
+
+  function response(response){
+    var actor = response["results"][0];
+    var movie0 = actor["known_for"][0];
+    var movie1 = actor["known_for"][1]
+    var actorArmor = 0;
+    actor["known_for"].forEach(function(item){
+      actorArmor += item["vote_average"];
+    })
+    var inputz = nextAvailable(gameObj[turnstatus]);
+    gameObj[turnstatus][inputz] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
+    console.log(gameObj);
+  }
+
+  function failure(){
+    console.log("Stuart is Sad.")
+  }
+
 }
 
 function fullCheck(){
@@ -154,10 +188,12 @@ function isActive(player){
   return false;
 }
 
-function newGameObj(name, image, status, attack1, attack2){
+function newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
   this.name = name;
-  this.status = status;
-  this.img = image;
-  this.attack1 = attack1;
-  this.attack2 = attack2;
+  this.armor = armor > 50 ? armor / 3 : armor * 1.5;;
+  this.popularity = actorpopularity;
+  this.status = "bench";
+  this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
+  this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
+  this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }
