@@ -1,5 +1,5 @@
 // dragula([document.querySelector(".player1"), document.querySelector(".player2")]);
-var array = [{name: "Bing Bong"}, {name: "Bing Bong"}, {name: "Bing Bong"}];
+var array = [{name: "Bing Bong", img:"img/bb.jpg", status:"bench"}, {name: "Bing Bong"}, {name: "Bing Bong"}];
 var turnstatus = "player1";
 
 var gameObj = {
@@ -7,10 +7,36 @@ var gameObj = {
   "player2" : {1:null , 2: null, 3: null, 4: null}
 }
 
-dragula([document.querySelector(".bench"), document.querySelector(".active")]);
 
 $(document).ready(function(){
 
+  var player1draginto = dragula([document.querySelector(".player1bench"), document.querySelector(".act1")],{
+    copy: true
+  });
+  var player1dragoutof = dragula([document.querySelector(".act1")], {
+    removeOnSpill: true
+  });
+  player1draginto.on("drop", function(el, target, source){
+    console.log(target);
+    if(source.className.includes("bench")){
+      if(target.className.includes("act1")){
+        gameObj["player1"][+(el.className[0])].status = "active";
+        // alert("Bing");
+      }
+    }
+  })
+
+  player1dragoutof.on("remove", function(el){
+    gameObj["player1"][+(el.className[0])].status = "benched";
+    console.log(gameObj["player1"]);
+  })
+
+  dragula([document.querySelector(".player2bench"), document.querySelector(".act2")],{
+    copy: true
+  });
+  dragula([document.querySelector(".act2")], {
+    removeOnSpill: true
+  });
 
   $(document).on("keydown", "#" + turnstatus, addToParty);
 
@@ -18,12 +44,10 @@ $(document).ready(function(){
 })
 
 function addToParty(key){
-  console.log(turnstatus)
   var classist = $(this).attr('id');
   var input = $('input').val();
   if (key.keyCode === 13){
     var inputz = nextAvailable(gameObj[classist])
-    console.log(inputz);
     if(turnstatus === "player1"){
       turnstatus = "player2";
       $("#player1").parent().removeClass('turn')
@@ -39,6 +63,7 @@ function addToParty(key){
     }
     if (inputz !== null){
       gameObj[classist][inputz] = array[input];
+      renderer(classist, inputz);
     }else{
       // alert("BingBong")
     }
@@ -58,12 +83,11 @@ function nextAvailable(playerobj){
   return null;
 }
 
-function renderer(){
-  for (players in gameObj){
-    for(pieces in gameObj[players]){
-      if (gameObj[players][pieces] !== null){
-        $
-      }
-    }
-  }
+function renderer(inputName, divClass){
+  var obj = gameObj[inputName][divClass]
+  var printTo = $("#" + inputName).siblings('.' + divClass);
+  // console.log(printTo);
+  $(printTo).append('<h4>' + obj.name + '</h4>');
+  $(printTo).append('<img class ="'+ divClass + '"width="80" height="80" src="'+obj.img+'"/>');
+
 }

@@ -109,19 +109,18 @@ div.player2 {
   justify-content: space-between; }
 
 section.player1 {
-  margin-left: 3vw;
-  align-items: flex-start; }
+  margin-left: 3vw; }
 
 section.player2 {
-  margin-right: 3vw;
-  align-items: flex-end; }
+  margin-right: 3vw; }
 
 .bench {
   display: flex;
   flex-direction: column;
   height: 100vh;
   justify-content: space-around;
-  width: 20vw; }
+  width: 20vw;
+  align-items: center; }
   .bench div {
     width: 100px;
     height: 100px;

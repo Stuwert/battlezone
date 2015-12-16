@@ -96,13 +96,12 @@ div.player2{
 
 section.player1{
   margin-left: $section-flex;
-  align-items: flex-start;
+
 
 }
 
 section.player2{
   margin-right: $section-flex;
-  align-items: flex-end;
 }
 
 .bench{
@@ -111,6 +110,7 @@ section.player2{
   height: 100vh;
   justify-content: space-around;
   width: 20vw;
+  align-items: center;
   div{
     width: 100px;
     height: 100px;
