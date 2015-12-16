@@ -11,22 +11,42 @@ dragula([document.querySelector(".bench"), document.querySelector(".active")]);
 
 $(document).ready(function(){
 
-  $('input').keydown(function(key){
-    var input = $('input').val();
-    if (key.keyCode === 13){
-      var inputz = nextAvailable(gameObj.player1)
-      console.log(inputz);
-      if (inputz !== null){
-        gameObj.player1[inputz] = array[input]
-      }else{
-        alert("BingBong")
-      }
-      console.log(gameObj.player1);
-    }
-  })
+
+  $(document).on("keydown", "#" + turnstatus, addToParty);
 
 
 })
+
+function addToParty(key){
+  console.log(turnstatus)
+  var classist = $(this).attr('id');
+  var input = $('input').val();
+  if (key.keyCode === 13){
+    var inputz = nextAvailable(gameObj[classist])
+    console.log(inputz);
+    if(turnstatus === "player1"){
+      turnstatus = "player2";
+      $("#player1").parent().removeClass('turn')
+      $("#player2").parent().addClass('turn')
+      $(document).off("keydown", "#player1");
+      $(document).on("keydown", "#player2", addToParty);
+    }else{
+      turnstatus = "player1";
+      $("#player2").parent().removeClass('turn')
+      $("#player1").parent().addClass('turn')
+      $(document).off("keydown", "#player2");
+      $(document).on("keydown", "#player1", addToParty);
+    }
+    if (inputz !== null){
+      gameObj[classist][inputz] = array[input];
+    }else{
+      // alert("BingBong")
+    }
+    if (nextAvailable(gameObj[classist]) === null){
+      $('.'+classist+'bench').find('input').after('<p>Party Complete</p>');
+    }
+  }
+}
 
 function nextAvailable(playerobj){
   console.log(playerobj)
