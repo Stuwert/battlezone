@@ -52,13 +52,14 @@ main{
 }
 
 .player1, .player2{
-  height: 200px;
-  width: 125px;
+  height: 320px;
+  width: 245px;
   border-radius: $div-radius;
   border: 1px dashed black;
 }
 
 .fighters{
+  text-align: center;
   div{
     h2{
       margin: 5px 0;
@@ -70,10 +71,16 @@ main{
       align-items: center;
       height: 80%;
       .posters{
+        margin: 10px 0;
+        background-color: #529471;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
+        border-radius: 10px;
+      }
+      img:hover{
+        opacity: 0.75;
       }
     }
   }
@@ -127,8 +134,8 @@ button{
   align-items: center;
   width: 20vw;
   div{
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 200px;
     background-color: #a3cd93;
     border-radius: $div-radius;
     display: flex;
@@ -144,16 +151,14 @@ button{
   }
 }
 
+
 .input{
   background-color: #35635b;
-  height: 300px;
+  height: 150px;
   width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.input{
   div{
     display: flex;
     flex-direction: column;
@@ -162,6 +167,9 @@ button{
     height: 100%;
     h4, p{
       color: white;
+      font-size: 30px;
+      margin: 0 20px;
+      text-align: center;
     }
   }
 }
@@ -205,4 +213,10 @@ button{
 
 .fainted{
   opacity: .5;
+}
+
+input{
+  font-size: 24px;
+  height: 30px;
+  width: 160px;
 }

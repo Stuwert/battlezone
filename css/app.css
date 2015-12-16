@@ -73,24 +73,31 @@ main section {
   width: 100%; }
 
 .player1, .player2 {
-  height: 200px;
-  width: 125px;
+  height: 320px;
+  width: 245px;
   border-radius: 15px;
   border: 1px dashed black; }
 
-.fighters div h2 {
-  margin: 5px 0; }
-.fighters div div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 80%; }
-  .fighters div div .posters {
+.fighters {
+  text-align: center; }
+  .fighters div h2 {
+    margin: 5px 0; }
+  .fighters div div {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
-    width: 100%; }
+    align-items: center;
+    height: 80%; }
+    .fighters div div .posters {
+      margin: 10px 0;
+      background-color: #529471;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      border-radius: 10px; }
+    .fighters div div img:hover {
+      opacity: 0.75; }
 
 #printout {
   background-color: black;
@@ -132,8 +139,8 @@ button {
   align-items: center;
   width: 20vw; }
   .bench div {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 200px;
     background-color: #a3cd93;
     border-radius: 15px;
     display: flex;
@@ -147,20 +154,22 @@ button {
 
 .input {
   background-color: #35635b;
-  height: 300px;
+  height: 150px;
   width: 400px;
   display: flex;
   justify-content: center;
   align-items: center; }
-
-.input div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%; }
-  .input div h4, .input div p {
-    color: white; }
+  .input div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%; }
+    .input div h4, .input div p {
+      color: white;
+      font-size: 30px;
+      margin: 0 20px;
+      text-align: center; }
 
 .turn {
   border-radius: 15px;
@@ -191,5 +200,10 @@ button {
 
 .fainted {
   opacity: .5; }
+
+input {
+  font-size: 24px;
+  height: 30px;
+  width: 160px; }
 
 /*# sourceMappingURL=app.css.map */

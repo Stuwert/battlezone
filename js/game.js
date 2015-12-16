@@ -53,12 +53,15 @@ function detectWinner(character1, character2){
   if (character1.status === "fainted" && character2.status === "fainted"){
     removePlayer("player1")
     removePlayer("player2")
+    hideFightButton();
     return "No One";
   }else if (character1.status === "fainted"){
     removePlayer("player1")
+    hideFightButton();
     return character2.name;
   }else if (character2.status === "fainted"){
-    removePlayer("player2")
+    removePlayer("player2");
+    hideFightButton();
     return character1.name;
   }else{
     return false;

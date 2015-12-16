@@ -2,8 +2,8 @@
 var turnstatus = "player1";
 
 var gameObj = {
-  "player1" : {1:null },
-  "player2" : {1:null }
+  "player1" : {1:null, 2: null },
+  "player2" : {1:null, 2: null }
 }
 
 
@@ -38,6 +38,13 @@ function revealFightButton(){
   $('#printout').removeClass('hidden');
   $('#fight').find('p').addClass('hidden');
   $('#fight').find('button').removeClass('hidden');
+}
+
+function hideFightButton(){
+  $('.input').animate({"height" : "150", "width" : "400"}, 500);
+  $('#fight').find('p').removeClass('hidden');
+  $('#fight').find('button').addClass('hidden');
+
 }
 
 function addToParty(key){
@@ -92,12 +99,12 @@ function switchTurn(){
     turnstatus = "player2";
     $("#player1").removeClass('turn')
     $("#player2").addClass('turn')
-    $('#populatebench').find('h4').html("Player 2, Choose Character " + nextAvailable(gameObj[turnstatus]));
+    $('#populatebench').find('h4').html("Player 2, Select actor/actress number " + nextAvailable(gameObj[turnstatus] + " to add to your team."));
   }else{
     turnstatus = "player1";
     $("#player2").removeClass('turn')
     $("#player1").addClass('turn')
-      $('#populatebench').find('h4').html("Player 1, Choose Character " + nextAvailable(gameObj[turnstatus]));
+      $('#populatebench').find('h4').html("Player 1, Select actor/actress number " + nextAvailable(gameObj[turnstatus] + " to add to your team."));
   }
 }
 
@@ -114,10 +121,12 @@ function renderer(inputName, divClass){
   var obj = gameObj[inputName][divClass]
   var printTo = $('<div class="'+ divClass + '"></div>').appendTo("#" + inputName);
   $(printTo).append('<h4>' + obj.name + '</h4>');
-  $(printTo).append('<img width="60" height="80" src="'+obj.img+'"/>');
+  $(printTo).append('<img width="100" height="150" src="'+obj.img+'"/>');
   $(printTo).append('<div class="posters"></div>')
-  $(printTo).find('.posters').append('<img class="attack1" width="40" height="60" src="'+obj.attack1.img+'"/>')
-  $(printTo).find('.posters').append('<img class="attack2" width="40" height="60" src="'+obj.attack2.img+'"/>')
+  $(printTo).find('.posters').append('<img class="attack1" width="55" height="80" src="'+obj.attack1.img+'"/>')
+  $(printTo).find('.attack1').before('<p>Attack1</p>');
+  $(printTo).find('.posters').append('<img class="attack2" width="55" height="80" src="'+obj.attack2.img+'"/>')
+  $(printTo).find('.attack1').after('<p>Attack2</p>');
 
 }
 
