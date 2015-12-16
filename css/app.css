@@ -94,9 +94,14 @@ main section {
 
 #printout {
   background-color: black;
+  overflow-y: scroll;
   height: 30vh;
   width: 60vw;
   margin: 0 auto; }
+  #printout p {
+    color: green;
+    font-family: courier;
+    font-size: 14px; }
 
 button {
   height: 30px;

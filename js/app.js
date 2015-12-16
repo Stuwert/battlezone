@@ -2,8 +2,8 @@
 var turnstatus = "player1";
 
 var gameObj = {
-  "player1" : {1:null , 2: null, 3: null, 4: null, 5: null},
-  "player2" : {1:null , 2: null, 3: null, 4: null, 5: null}
+  "player1" : {1:null },
+  "player2" : {1:null }
 }
 
 
@@ -11,6 +11,11 @@ $(document).ready(function(){
   $(document).on("keydown", "input", addToParty);
   $('.player1').on('click', '[class^="attack"]', selectAttack);
   $('.player2').on('click', '[class^="attack"]', selectAttack);
+  $('.input').on('click', 'button', function(){
+    var chars1 = returnActiveChar(gameObj["player1"]);
+    var chars2 = returnActiveChar(gameObj["player2"]);
+    fightLoop(chars1, chars2);
+  })
 })
 
 function selectAttack(){
@@ -42,11 +47,6 @@ function addToParty(key){
       query: input
     }
     tmdb.call("/search/person", parameterz, response, failure);
-
-
-    // newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2)
-    // renderer(turnstatus, inputz);
-    // fullCheck();
   }
 
   function response(response){
@@ -59,7 +59,9 @@ function addToParty(key){
     })
     var inputz = nextAvailable(gameObj[turnstatus]);
     gameObj[turnstatus][inputz] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
-    console.log(gameObj);
+    renderer(turnstatus, inputz);
+    $('input').val("")
+    fullCheck();
   }
 
   function failure(){
@@ -112,10 +114,10 @@ function renderer(inputName, divClass){
   var obj = gameObj[inputName][divClass]
   var printTo = $('<div class="'+ divClass + '"></div>').appendTo("#" + inputName);
   $(printTo).append('<h4>' + obj.name + '</h4>');
-  $(printTo).append('<img width="80" height="80" src="'+obj.img+'"/>');
+  $(printTo).append('<img width="60" height="80" src="'+obj.img+'"/>');
   $(printTo).append('<div class="posters"></div>')
-  $(printTo).find('.posters').append('<img class="attack1" width="30" height="30" src="'+obj.attack1+'"/>')
-  $(printTo).find('.posters').append('<img class="attack2" width="30" height="30" src="'+obj.attack2+'"/>')
+  $(printTo).find('.posters').append('<img class="attack1" width="40" height="60" src="'+obj.attack1.img+'"/>')
+  $(printTo).find('.posters').append('<img class="attack2" width="40" height="60" src="'+obj.attack2.img+'"/>')
 
 }
 
@@ -186,14 +188,4 @@ function isActive(player){
     }
   }
   return false;
-}
-
-function newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
-  this.name = name;
-  this.armor = armor > 50 ? armor / 3 : armor * 1.5;;
-  this.popularity = actorpopularity;
-  this.status = "bench";
-  this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
-  this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
-  this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }

@@ -1,20 +1,6 @@
 var i = 0;
 var h = 0;
 var gameObj = {};
-var char1 = {
-  armor: 20,
-  attack1: 80,
-  health: 300,
-  status: "active"
-}
-
-var char2 = {
-  armor: 30,
-  attack1: 60,
-  health: 300,
-  status: "active"
-}
-
 var attackstatus = {
   player1: null,
   player2: null
@@ -22,34 +8,45 @@ var attackstatus = {
 
 
 function fightLoop(character1, character2){
-  var char1pop = attackstatus["char1"].popularity/attackstatus["char2"].popularity;
-  var char2pop = 1/char1pop
-  var character1Damage = damageDealt(damageMultiplier(attackstatus["char2"].attack, char2pop), character1.armor);
-  var character2Damage = damageDealt(damageMultiplier(attackstatus["char1"].attack, char1pop), character2.armor);
-  character1.health = calculateHealth(character1.health, character1Damage);
-  character2.health = calculateHealth(character2.health, character2Damage);
-  character1.status = returnStatus(character1);
-  character2.status = returnStatus(character2);
-  printScreen(character1Damage, character2Damage)
-  var winner = detectWinner(character1, character2);
-  if (winner){
-    var winner = game.add.text(20, 20 * h, winner + " wins", {font: "14px Arial", fill: "white" })
-    h++
+  var char1pop = attackstatus["player1"].popularity/attackstatus["player2"].popularity;
+  var char2pop = 1/char1pop;
+  var character1Damage = damageDealt(damageMultiplier(attackstatus["player2"].attack, char2pop), character1.armor);
+  var character2Damage = damageDealt(damageMultiplier(attackstatus["player1"].attack, char1pop), character1.armor);
+  calculateHealth(character1, character1Damage);
+  calculateHealth(character2, character2Damage);
+  printScreen(character1, character2Damage, character2, character1Damage);
+  if (!detectWinner(character1, character2)){
+    fightLoop(character1, character2);
+  }else{
+    console.log(detectWinner(character1, character2))
   }
 }
 
-function printScreen(dam1, dam2){
-  var character1 = gameObj.char1;
-  var character2 = gameObj.char2;
-  var damage1 = game.add.text(20, 20 * h, character2.name + " dealt " + dam1 + " damage to " + character1.name, {font: "14px Arial", fill: "white"});
-  h++;
-  var charhealth1 = game.add.text(20, 20 * h, character1.name + " is at " + character1.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
-  h++;
-  var damage2 = game.add.text(20, 20 * h, character1.name + "dealt " + dam2 + " damage to " + character2.name, {font: "14px Arial", fill: "white" })
-  h++;
-  var charhealth2 = game.add.text(20, 20 * h, character2.name + " is at " + character2.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
-  h++;
+function returnActiveChar(player){
+  for(var chars in player){
+    if (player[chars].status === "active"){
+      return player[chars];
+    }
+  }
 }
+
+function printScreen(character1, characater1dam, character2, character2dam){
+  $('#printout').append('<p>' + character1.name + ' dealt ' + characater1dam + " to " + character2.name + ", + " + character2.name + " is at " + character2.health + " life.")
+  $('#printout').append('<p>' + character2.name + ' dealt ' + character2dam + " to " + character1.name + ", + " + character1.name + " is at " + character1.health + " life.")
+}
+
+// function printScreen(dam1, dam2){
+//   var character1 = gameObj.char1;
+//   var character2 = gameObj.char2;
+//   var damage1 = game.add.text(20, 20 * h, character2.name + " dealt " + dam1 + " damage to " + character1.name, {font: "14px Arial", fill: "white"});
+//   h++;
+//   var charhealth1 = game.add.text(20, 20 * h, character1.name + " is at " + character1.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
+//   h++;
+//   var damage2 = game.add.text(20, 20 * h, character1.name + "dealt " + dam2 + " damage to " + character2.name, {font: "14px Arial", fill: "white" })
+//   h++;
+//   var charhealth2 = game.add.text(20, 20 * h, character2.name + " is at " + character2.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
+//   h++;
+// }
 
 function detectWinner(character1, character2){
   if (character1.status === "fainted" && character2.status === "fainted"){
@@ -67,7 +64,7 @@ function damageDealt(attack, armor){
   if (armor > attack){
     return 1
   }else{
-    return +(attack - armor).toFixed(0);
+    return +((attack - armor).toFixed(0));
   }
 };
 
@@ -83,22 +80,21 @@ function damageMultiplier(attack, multiplier){
  return attack * randomizer;
 };
 
-function calculateHealth(health, attackDamage){
- return health - attackDamage;
+function calculateHealth(char, attackDamage){
+  char.health = char.health - attackDamage
+  if (char.health <= 0 ){
+    char.status = "fainted"
+  }
 };
 
-function returnStatus(character){
- return character.health <= 0 ? "fainted" : "alive";
-};
-
-
-function characterz(armor, movie0, movie1, actorpopularity, name){
-  console.log(armor);
-  this.armor = armor > 50 ? armor / 3 : armor * 1.5;
-  this.movie1 = {popularity: movie0 * 10, attack: movie0 * actorpopularity * 3};
-  this.movie2 = {popularity: movie1 * 10, attack: movie1 * actorpopularity * 3};
-  this.popularity = actorpopularity;
-  this.health = 500;
-  this.status = "active";
+function newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
   this.name = name;
+  this.armor = armor > 50 ? armor / 3 : armor * 1.5;
+  console.log(this.armor);
+  this.popularity = actorpopularity;
+  this.status = "bench";
+  this.health = 500;
+  this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
+  this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
+  this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }

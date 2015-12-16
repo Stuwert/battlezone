@@ -81,9 +81,15 @@ main{
 
 #printout{
   background-color: black;
+  overflow-y: scroll;
   height: 30vh;
   width: 60vw;
   margin: 0 auto;
+  p{
+    color: green;
+    font-family: courier;
+    font-size: 14px;
+  }
 }
 
 button{
