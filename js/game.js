@@ -50,14 +50,22 @@ function printScreen(character1, characater1dam, character2, character2dam){
 
 function detectWinner(character1, character2){
   if (character1.status === "fainted" && character2.status === "fainted"){
+    removePlayer("player1")
+    removePlayer("player2")
     return "No One";
   }else if (character1.status === "fainted"){
+    removePlayer("player1")
     return character2.name;
   }else if (character2.status === "fainted"){
+    removePlayer("player2")
     return character1.name;
   }else{
     return false;
   }
+}
+
+function removePlayer(charname){
+  $("." + charname).empty();
 }
 
 function damageDealt(attack, armor){
