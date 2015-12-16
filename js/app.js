@@ -3,45 +3,56 @@ var array = [{name: "Bing Bong", img:"img/bb.jpg", poster:"img/poster.png", stat
 var turnstatus = "player1";
 
 var gameObj = {
-  "player1" : {1:null , 2: null, 3: null, 4: null},
-  "player2" : {1:null , 2: null, 3: null, 4: null}
+  "player1" : {1:null , 2: null, 3: null, 4: null, 5: null},
+  "player2" : {1:null , 2: null, 3: null, 4: null, 5: null}
 }
 
 
 $(document).ready(function(){
-
-
-
   $(document).on("keydown", "input", addToParty);
-
-
+  $('.act1').on("click", "[class^='attack']", function(){
+    console.log(this);
+  })
 })
 
 function addToParty(key){
   var input = $('input').val();
   if (key.keyCode === 13){
-    var inputz = nextAvailable(gameObj[turnstatus])
-    if (inputz !== null){
-      gameObj[turnstatus][inputz] = new newGameObj(array[input].name, array[input].img, array[input].status, array[input].poster);
-      renderer(turnstatus, inputz);
-    }
-    if (nextAvailable(gameObj[turnstatus]) === null){
-      $('#'+turnstatus).prepend('<p>Party Complete</p>');
-      if (turnstatus === "player2"){
-        $('#playerselect').removeClass('hidden');
-        $('#populatebench').addClass('hidden');
-        activateDragging();
-      }
-    }
+    var inputz = nextAvailable(gameObj[turnstatus]);
+    gameObj[turnstatus][inputz] = new newGameObj(array[input].name, array[input].img, array[input].status, array[input].poster, array[input].poster);
+    renderer(turnstatus, inputz);
+    fullCheck();
+  }
+}
+
+function fullCheck(){
+  if(nextAvailable(gameObj[turnstatus]) === null){
     if(turnstatus === "player1"){
-      turnstatus = "player2";
-      $("#player1").removeClass('turn')
-      $("#player2").addClass('turn')
+      switchTurn();
     }else{
-      turnstatus = "player1";
-      $("#player2").removeClass('turn')
-      $("#player1").addClass('turn')
+      $('#playerselect').removeClass('hidden');
+      $('#playerselect').children().removeClass('hidden');
+      $('#populatebench').children().addClass('hidden');
+      $('#populatebench').addClass('hidden');
+      $('.bench').removeClass('turn');
+      activateDragging();
     }
+  }else{
+    switchTurn();
+  }
+}
+
+function switchTurn(){
+  if(turnstatus === "player1"){
+    turnstatus = "player2";
+    $("#player1").removeClass('turn')
+    $("#player2").addClass('turn')
+    $('#populatebench').find('h4').html("Player 2, Choose Character " + nextAvailable(gameObj[turnstatus]));
+  }else{
+    turnstatus = "player1";
+    $("#player2").removeClass('turn')
+    $("#player1").addClass('turn')
+      $('#populatebench').find('h4').html("Player 1, Choose Character " + nextAvailable(gameObj[turnstatus]));
   }
 }
 
@@ -59,13 +70,14 @@ function renderer(inputName, divClass){
   var printTo = $('<div class="'+ divClass + '"></div>').appendTo("#" + inputName);
   $(printTo).append('<h4>' + obj.name + '</h4>');
   $(printTo).append('<img width="80" height="80" src="'+obj.img+'"/>');
-  console.log(obj.img);
-  $(printTo).append('<img class="poster" width="30" height="30" src="'+obj.poster+'"/>')
+  $(printTo).append('<div class="posters"></div>')
+  $(printTo).find('.posters').append('<img class="attack1" width="30" height="30" src="'+obj.attack1+'"/>')
+  $(printTo).find('.posters').append('<img class="attack2" width="30" height="30" src="'+obj.attack2+'"/>')
 
 }
 
 function activateDragging(){
-  var player1draginto = dragula([document.querySelector(".player1bench"), document.querySelector(".act1")],{
+  var player1draginto = dragula([document.querySelector("#player1"), document.querySelector(".act1")],{
     copy: true
   });
   var player1dragoutof = dragula([document.querySelector(".act1")], {
@@ -76,17 +88,21 @@ function activateDragging(){
     gameObj["player1"][+(el.className[0])].status = "active";
     if(activeCheck()){
       $('#playerselect').addClass('hidden');
+      $('#playerselect').children().addClass('hidden');
       $('#fight').removeClass('hidden');
+      $('#fight').find('p').removeClass('hidden');
     }
   })
 
   player1dragoutof.on("remove", function(el){
     gameObj["player1"][+(el.className[0])].status = "bench";
     $('#playerselect').removeClass('hidden');
+    $('#playerselect').children().removeClass('hidden');
     $('#fight').addClass('hidden');
+    $('#fight').children().addClass('hidden');
   })
 
-  var player2draginto = dragula([document.querySelector(".player2bench"), document.querySelector(".act2")],{
+  var player2draginto = dragula([document.querySelector("#player2"), document.querySelector(".act2")],{
     copy: true
   });
   var player2dragoutof = dragula([document.querySelector(".act2")], {
@@ -97,14 +113,18 @@ function activateDragging(){
     gameObj["player2"][+(el.className[0])].status = "active";
     if(activeCheck()){
       $('#playerselect').addClass('hidden');
+      $('#playerselect').children().addClass('hidden');
       $('#fight').removeClass('hidden');
+      $('#fight').find('p').removeClass('hidden');
     }
   })
 
   player2dragoutof.on("remove", function(el){
     gameObj["player2"][+(el.className[0])].status = "bench";
     $('#playerselect').removeClass('hidden');
+    $('#playerselect').children().removeClass('hidden');
     $('#fight').addClass('hidden');
+    $('#fight').children().addClass('hidden');
   })
 
 }
@@ -125,9 +145,10 @@ function isActive(player){
   return false;
 }
 
-function newGameObj(name, image, status, poster){
+function newGameObj(name, image, status, attack1, attack2){
   this.name = name;
   this.status = status;
   this.img = image;
-  this.poster = poster;
+  this.attack1 = attack1;
+  this.attack2 = attack2;
 }

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/dragula.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="css/app.css" media="screen" title="no title" charset="utf-8">
     <title></title>
@@ -10,29 +11,49 @@
     <main>
       <h1>Actor Battle</h1>
       <section>
-          <h2 class="player1">Player 1</h2>
-          <div class="act1 active player1">
+
+        <div class="hidden" id="printout"></div>
+
+        <div class="fighters">
+          <div class="act1">
+            <h2>Player 1 Fighter</h2>
 
           </div>
-          <section>
-            <div id="canvas"></div>
-            <input id="populatebench" type="text" name="name" value="" >
-            <p id="playerselect" class="hidden">
-              Select Your Characters
+          <div class="act2">
+            <h2>Player 2 Fighter</h2>
+
+          </div>
+        </div>
+
+        <div class="input">
+          <div class="" id="populatebench">
+            <h4>Player 1, Choose Character 1.</h4>
+            <input type="text" name="name" value="" >
+
+          </div>
+          <div id="playerselect">
+            <p class="hidden">
+              Select Your Characters to Battle
             </p>
-            <button id="fight" class="hidden" type="button" name="button">Fight</button>
-          </section>
-          <div class="act2 active player2">
-
           </div>
-          <h2 class="player2">Player 2</h2>
+          <div id="fight">
+            <p class="hidden">
+              Select your attacks.
+            </p>
+            <button class="hidden">Fight</button>
+          </div>
+        </div>
+
+
       </section>
     </main>
     <section class="background" name="">
-      <section id="player1" class="bench player1 player1bench turn" >
+      <section id="player1" class="bench turn" >
+        <h3>Player 1</h3>
 
       </section>
-      <section id="player2" class="bench player2 player2bench" >
+      <section id="player2" class="bench" >
+        <h3>Player 2</h3>
 
       </section>
     </section>

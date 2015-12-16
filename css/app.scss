@@ -3,7 +3,15 @@
 $div-radius : 15px;
 $interior-flex: 7vw;
 $section-flex: 3vw;
+$active-charmarg: 20px;
 
+h1, h2, h3, h4, h5, h6, ul, li, p{
+  font-family: 'Noto Sans', sans-serif;
+}
+
+body{
+  background-color: #e5f1e3;
+}
 
 main{
   position: fixed;
@@ -31,36 +39,50 @@ main{
     margin: 2.5vh 5%;
     height: 80vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
+  }
+}
+
+.fighters{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.act1, .act2{
+  height: 200px;
+  width: 125px;
+  border-radius: $div-radius;
+  border: 1px dashed black;
+}
+
+.fighters{
+  div{
     h2{
-      color: black;
-      font-size: 20px;
-      position: relative;
+      margin: 5px 0;
     }
-    h2.player1{
-      left: $section-flex;
-    }
-    h2.player2{
-      right: $section-flex;
-      text-align: right;
-    }
-    section{
-      width: auto;
-      margin: 0;
+    div{
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      flex-wrap: nowrap;
+      align-items: center;
+      height: 80%;
+      .posters{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+      }
     }
   }
 }
 
-#canvas{
+#printout{
   background-color: black;
-  height: 60vh;
-  width: 20vw;
+  height: 30vh;
+  width: 60vw;
   margin: 0 auto;
 }
 
@@ -78,14 +100,11 @@ button{
   align-self: flex-end;
   bottom: 20vh;
   position: relative;
-
-}
-
-div.player1{
-  left: $interior-flex;
-}
-div.player2{
-  right: $interior-flex;
+  div{
+    .poster{
+      display: inline-block;
+    }
+  }
 }
 
 .background{
@@ -94,95 +113,86 @@ div.player2{
   justify-content: space-between;
 }
 
-section.player1{
-  margin-left: $section-flex;
-
-
-}
-
-section.player2{
-  margin-right: $section-flex;
-}
-
 .bench{
   display: flex;
   flex-direction: column;
   height: 100vh;
   justify-content: space-around;
-  width: 20vw;
   align-items: center;
+  width: 20vw;
   div{
-    width: 100px;
-    height: 100px;
-    background-color: grey;
+    width: 120px;
+    height: 120px;
+    background-color: #a3cd93;
     border-radius: $div-radius;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .posters{
+    display:none;
+  }
+  [class^="attack"]{
+    display: none;
+  }
+}
+
+.input{
+  background-color: #35635b;
+  height: 300px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input{
+  div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    h4, p{
+      color: white;
+    }
   }
 }
 
 .turn{
   border-radius: $div-radius;
-  background-color: dimgrey;
+  position: relative;
+}
+
+.turn{
+  div, h3{
+    z-index: 2;
+  }
+}
+
+.turn::after{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: '';
+  background-color: #a3cd93;
+  opacity: .5;
+  border-radius: $div-radius;
+  z-index: 0;
 }
 
 .hidden{
   display: none;
 }
 
-.bench{
-  div{
-    .poster{
-      display:none;
-    }
-  }
-}
-
 .gu-mirror{
-  .poster{
+  .posters{
     display: none;
-  }
-}
-
-.active{
-  div{
-    .poster{
-      display: inline-block;
+    [class^="attack"]{
+      display: none;
     }
   }
 }
-
-//
-// $actor-width: 200px;
-// $actor-height: 120px;
-// $actor-background: grey;
-// $actor-border: 15px;
-//
-// main{
-//   display: flex;
-//   flex-direction: row;
-// }
-//
-// canvas{
-//   height: 200px;
-//   width: 400px;
-//   background-color: black;
-// }
-//
-// section{
-//   display: flex;
-//   flex-direction: column;
-//   height: auto;
-// }
-//
-// .active{
-//   div{
-//     width: $actor-width * 2;
-//     height: $actor-height * 2;
-//   }
-// }
-//
-// div{
-//   width: $actor-width;
-//   height: $actor-height;
-//   background-color: $actor-background;
-//   border-radius: $actor-border;
-// }
