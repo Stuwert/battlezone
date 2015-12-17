@@ -5,6 +5,8 @@ var attackstatus = {
   player1: null,
   player2: null
 }
+var player1score = 0;
+var player2score = 0;
 
 
 function fightLoop(character1, character2){
@@ -54,14 +56,21 @@ function detectWinner(character1, character2){
     removePlayer("player1")
     removePlayer("player2")
     hideFightButton();
+    checkForWinner();
     return "No One";
   }else if (character1.status === "fainted"){
     removePlayer("player1")
     hideFightButton();
+    checkForWinner();
+    player2score++;
+    printScore();
     return character2.name;
   }else if (character2.status === "fainted"){
     removePlayer("player2");
     hideFightButton();
+    checkForWinner();
+    player1score++;
+    printScore();
     return character1.name;
   }else{
     return false;
@@ -111,4 +120,26 @@ function newGameObj(name, armor, actorpopularity, actorimage, image1, image2, at
   this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
   this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
   this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
+}
+
+function characterReady(player){
+  for (characters in player){
+    if (player[characters].status !== "fainted"){
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkForWinner(){
+  var player1stats = characterReady(gameObj["player1"]);
+  var player2stats = characterReady(gameObj["player2"]);
+  console.log(player1stats, player2stats);
+  if (player1stats && !player2stats){
+    printOutcome("Player 1 Wins");
+  }else if(player2stats && !player1stats){
+      printOutcome("Player 2 Wins");
+  }else if (!player1stats && !player2stats){
+    printOutcome("No One Wins");
+  }
 }

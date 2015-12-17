@@ -1,6 +1,7 @@
 // dragula([document.querySelector(".player1"), document.querySelector(".player2")]);
 var turnstatus = "player1";
 
+
 var gameObj = {
   "player1" : {1:null, 2: null },
   "player2" : {1:null, 2: null }
@@ -99,12 +100,12 @@ function switchTurn(){
     turnstatus = "player2";
     $("#player1").removeClass('turn')
     $("#player2").addClass('turn')
-    $('#populatebench').find('h4').html("Player 2, Select actor/actress number " + nextAvailable(gameObj[turnstatus] + " to add to your team."));
+    $('#populatebench').find('h4').html("Player 2, Select actor/actress number " + nextAvailable(gameObj[turnstatus]) + " for your team.");
   }else{
     turnstatus = "player1";
     $("#player2").removeClass('turn')
     $("#player1").addClass('turn')
-      $('#populatebench').find('h4').html("Player 1, Select actor/actress number " + nextAvailable(gameObj[turnstatus] + " to add to your team."));
+      $('#populatebench').find('h4').html("Player 1, Select actor/actress number " + nextAvailable(gameObj[turnstatus]) + " for your team.");
   }
 }
 
@@ -126,7 +127,7 @@ function renderer(inputName, divClass){
   $(printTo).find('.posters').append('<img class="attack1" width="55" height="80" src="'+obj.attack1.img+'"/>')
   $(printTo).find('.attack1').before('<p>Attack1</p>');
   $(printTo).find('.posters').append('<img class="attack2" width="55" height="80" src="'+obj.attack2.img+'"/>')
-  $(printTo).find('.attack1').after('<p>Attack2</p>');
+  $(printTo).find('.attack2').before('<p>Attack2</p>');
 
 }
 
@@ -205,4 +206,15 @@ function isActive(player){
     }
   }
   return false;
+}
+
+function printScore(){
+  $('.bench').find('h5').remove();
+  $('#player1').find('p').after('<h5>' + player1score + '</h5>');
+  $('#player2').find('p').after('<h5>' + player2score + '</h5>');
+}
+
+function printOutcome(outcome){
+  $('.input').empty();
+  $('.input').append('<p>'+ outcome +'</p>')
 }

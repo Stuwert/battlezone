@@ -90,14 +90,15 @@ main section {
     height: 80%; }
     .fighters div div .posters {
       margin: 10px 0;
-      background-color: #529471;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
-      width: 100%;
-      border-radius: 10px; }
-    .fighters div div img:hover {
-      opacity: 0.75; }
+      width: 100%; }
+      .fighters div div .posters div {
+        border-radius: 10px;
+        background-color: #529471; }
+      .fighters div div .posters div:hover {
+        opacity: 0.75; }
 
 #printout {
   background-color: black;
@@ -138,6 +139,8 @@ button {
   justify-content: space-around;
   align-items: center;
   width: 20vw; }
+  .bench h5 {
+    font-size: 40px; }
   .bench div {
     width: 150px;
     height: 200px;
@@ -151,6 +154,8 @@ button {
     display: none; }
   .bench [class^="attack"] {
     display: none; }
+  .bench h3 {
+    font-size: 18px; }
 
 .input {
   background-color: #35635b;
@@ -158,7 +163,12 @@ button {
   width: 400px;
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  position: relative;
+  bottom: 10px; }
+  .input p {
+    color: white;
+    font-size: 30px; }
   .input div {
     display: flex;
     flex-direction: column;
@@ -205,5 +215,17 @@ input {
   font-size: 24px;
   height: 30px;
   width: 160px; }
+
+footer {
+  position: fixed;
+  height: 40px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  align-items: center; }
+  footer p {
+    margin: 0 10px; }
 
 /*# sourceMappingURL=app.css.map */

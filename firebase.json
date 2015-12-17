@@ -1,0 +1,9 @@
+{
+  "firebase": "actor-battle",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

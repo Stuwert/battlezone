@@ -72,15 +72,18 @@ main{
       height: 80%;
       .posters{
         margin: 10px 0;
-        background-color: #529471;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
-        border-radius: 10px;
-      }
-      img:hover{
-        opacity: 0.75;
+        div{
+          border-radius: 10px;
+          background-color: #529471;
+
+        }
+        div:hover{
+          opacity: 0.75;
+        }
       }
     }
   }
@@ -133,6 +136,9 @@ button{
   justify-content: space-around;
   align-items: center;
   width: 20vw;
+  h5{
+    font-size: 40px;
+  }
   div{
     width: 150px;
     height: 200px;
@@ -149,6 +155,9 @@ button{
   [class^="attack"]{
     display: none;
   }
+  h3{
+    font-size: 18px;
+  }
 }
 
 
@@ -159,6 +168,12 @@ button{
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  bottom: 10px;
+  p{
+    color: white;
+    font-size: 30px;
+  }
   div{
     display: flex;
     flex-direction: column;
@@ -219,4 +234,18 @@ input{
   font-size: 24px;
   height: 30px;
   width: 160px;
+}
+
+footer{
+  position: fixed;
+  height: 40px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  p{
+    margin: 0 10px;
+  }
 }
