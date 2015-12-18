@@ -14,7 +14,7 @@ var gameObj = {
 }
 var i = 0;
 var wordArray = [];
-
+var backupArray = ["sacked", "smothered", "destroyed", "pilfered", "confounded", "lightsabered", "lambasted", "coronated", "spliced", "punted"]
 
 
 function fightLoop(character1, character2){
