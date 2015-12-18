@@ -156,16 +156,12 @@ function isAlive(player){
 function resetCheck(){
   if (isAlive(gameObj["player1"]) && isAlive(gameObj["player2"])){
     $('#real').off("click");
-    $('#real').html("Next Battle");
-    $('#real').on("click", function(){
-      // activate("player1");
-      // activate("player2");
-      $('[class^="player"]').empty();
-      $('#real').off("click");
-      $('#real').html("Fight");
-      $('#real').addClass('offButton');
-      attackstatus = { "player1" : null, "player2" : null}
-    })
+    $('#real').addClass('offButton');
+    $('.display').append('<p>-------</p>');
+    $('.display').append("<p>Select your next Fighters and Attacks</p>")
+    $('.display').find('p').css({"font-size" : "18px"})
+    attackstatus = { "player1" : null, "player2" : null}
+    $('[class^="attack"]').css({"opacity" : "1.0"});
   }else{
     if(isAlive(gameObj["player1"])){
       console.log("Player1")

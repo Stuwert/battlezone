@@ -1,3 +1,5 @@
+var state = "fresh";
+
 $(document).ready(function(){
   $(document).on("keydown", "input", addToParty);
   $('.player1').on('click', '[class^="attack"]', selectAttack);
@@ -55,6 +57,10 @@ function removePlayer(charname){
 }
 
 function addToParty(key){
+  if(state === "fresh"){
+    state = "stale";
+    $('#player1').addClass("turn");
+  }
   var input = $('input').val();
   if (key.keyCode === 13){
     var parameterz = {  query: input  }
@@ -86,6 +92,7 @@ function fullCheck(){
   if(nextAvailable(gameObj[turnstatus]) === null){
     if(turnstatus === "player1"){
       switchTurn();
+      $('.turnstatus').html(turnstatus.charAt(0).toUpperCase() + turnstatus.substr(1))
     }else{
       $('.fighters').css({"display" : "flex"});
       $('input').css({"display" : "none"});
@@ -102,6 +109,7 @@ function fullCheck(){
     }
   }else{
     switchTurn();
+    $('.turnstatus').html(turnstatus.charAt(0).toUpperCase() + turnstatus.substr(1))
   }
 }
 
