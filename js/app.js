@@ -208,7 +208,7 @@ function printOutcome(outcome){
 
 function callVerb (i){
   var callar = $.ajax({
-    url: 'https://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=350&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=1&api_key=97d94b0b7779a50ac900e04879302f1c70b3d0fa7b6102f20',
+    url: 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=350&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=1&api_key=97d94b0b7779a50ac900e04879302f1c70b3d0fa7b6102f20',
     method: "GET",
     dataType: "json"
   })
