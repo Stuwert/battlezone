@@ -336,12 +336,15 @@ border: none;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  button:hover a{
+    color: #35635b;
+  }
   a{
     color: white;
     text-decoration: none;
   }
   a:hover{
-    color: #35635b
+    color: #35635b;
   }
 }
 

@@ -297,6 +297,8 @@ input {
   flex-direction: column;
   justify-content: space-around;
   align-items: center; }
+  .restartChoice button:hover a {
+    color: #35635b; }
   .restartChoice a {
     color: white;
     text-decoration: none; }
