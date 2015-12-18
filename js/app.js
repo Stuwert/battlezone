@@ -227,14 +227,14 @@ function renderer(inputName, divClass){
   var obj = gameObj[inputName][divClass]
   var findBench = $('#' + inputName).find('.characters');
   var printTo = $('<div class="'+ divClass + '"></div>').appendTo(findBench);
-  $(printTo).append('<h4>' + obj.name + '</h4>');
+  $(printTo).append('<h5>' + obj.name + '</h5>');
   $(printTo).append('<img width="100" height="150" src="'+obj.img+'"/>');
-  $(printTo).append('<div class="attack1"></div>')
+  $(printTo).append('<button class="attack1"></button>')
   $(printTo).find('.attack1').append('<p>Attack 1</p>');
-  $(printTo).find('.attack1').append('<img width="55" height="80" src="'+obj.attack1.img+'"/>')
-  $(printTo).append('<div class="attack2"></div>')
+  $(printTo).find('.attack1').append('<img width="35" height="60" src="'+obj.attack1.img+'"/>')
+  $(printTo).append('<button class="attack2"></button>')
   $(printTo).find('.attack2').append('<p>Attack 2</p>');
-  $(printTo).find('.attack2').append('<img width="55" height="80" src="'+obj.attack2.img+'"/>')
+  $(printTo).find('.attack2').append('<img width="35" height="60" src="'+obj.attack2.img+'"/>')
 
 }
 

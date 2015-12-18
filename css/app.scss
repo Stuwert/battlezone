@@ -4,20 +4,51 @@ $div-radius : 15px;
 $interior-flex: 7vw;
 $section-flex: 3vw;
 $active-charmarg: 20px;
+$base-font-size: 10px;
+$button-colors: #894389;
 
-h1, h2, h3, h4, h5, h6, ul, li, p{
-  font-family: 'Noto Sans', sans-serif;
+.flexed{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+a, ul, p, input{
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+}
+
+p{
+  line-height: 1.5;
+}
+h1{
+  margin-top: 30px;
+  font-size: 7 * $base-font-size;
+}
+
+h3{
+  font-size: 4 * $base-font-size;
+}
+
+h4{
+  color: white;
+  font-size: 30px;
+  margin: 0 20px;
+  text-align: center;
+}
+
+h5{
+  font-size: 2 * $base-font-size;
 }
 
 body{
   background-color: #e5f1e3;
-}
-
-main{
-  position: fixed;
-  height: 100vh;
-  width: 70vw;
-  margin-left: 15vw;
 }
 
 .background{
@@ -25,138 +56,44 @@ main{
   height: 100vh;
   width: 100vw;
   z-index: -1;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }
 
-h1{
-  margin-top: 30px;
-  font-size: 68px;
-  text-align: center;
-}
-//
 main{
+  position: fixed;
+  height: 100vh;
+  width: 70vw;
+  margin-left: 15vw;
   section{
     width: 90%;
     margin: 2.5vh 5%;
     height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    @extend .flexed;
   }
-}
-
-.active{
-  width: 17vw;
-  height: 17vh;
-  border-radius: $div-radius;
-  background-color: blue;
-  align-self: flex-end;
-  bottom: 20vh;
-  position: relative;
-  div{
-    .poster{
-      display: inline-block;
-    }
-  }
-}
-
-.background{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 .bench{
   .characters{
-    display: flex;
-    flex-direction: column;
+    @extend .flexed;
     height: 100vh;
-    justify-content: space-around;
-    align-items: center;
     width: 20vw;
     div{
       width: 150px;
       height: 200px;
-      background-color: #a3cd93;
+      background-color: #510D51;
       border-radius: $div-radius;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-    }
-    .posters{
-      display:none;
+      @extend .flexed;
     }
     [class^="attack"]{
       display: none;
     }
-  }
-  h5{
-    font-size: 40px;
-  }
-  h3{
-    font-size: 18px;
-  }
-}
-
-
-.input{
-  background-color: #35635b;
-  height: 150px;
-  width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  bottom: 10px;
-  p{
-    color: white;
-    font-size: 30px;
-  }
-  div{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
-    h4, p{
+    h5{
       color: white;
-      font-size: 30px;
-      margin: 0 20px;
-      text-align: center;
     }
   }
-}
 
-.turn{
-  border-radius: $div-radius;
-  position: relative;
-}
-
-.turn{
-  div, h3{
-    z-index: 2;
-  }
-}
-
-.turn::after{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  content: '';
-  background-color: #a3cd93;
-  opacity: .5;
-  border-radius: $div-radius;
-  z-index: 0;
-}
-
-
-.gu-mirror{
-  [class^="attack"]{
-    display: none;
-  }
 }
 
 .fainted{
@@ -187,26 +124,23 @@ footer{
   width: 450px;
   height: 300px;
   background-color: black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  @extend .flexed;
   p{
    color: green;
-   font-family: courier;
    text-align: center;
    font-size: 30px;
+   width: 80%;
  }
 }
 
 button{
-  margin: 30px 0;
+  margin: 30px;
   height: 50px;
-  width: 100px;
-  background-color: #35635b;
+  width: 150px;
+  background-color: $button-colors;
   border-radius: 10px;
   border: none;
   color: white;
-  font-family: Helvetica;
   font-size: 20px;
   box-shadow: 2px 2px 1px 1px rgba(165, 172, 177, 0.75);
 }
@@ -214,8 +148,8 @@ button{
 button:hover{
   box-shadow: inset 2px 2px 1px 1px rgba(165, 172, 177, 0.75);
   background-color: white;
-  border: 2px solid #35635b;
-  color: #35635b;
+  border: 2px solid $button-colors;
+  color: $button-colors;
 }
 
 input{
@@ -223,7 +157,6 @@ input{
   height: 40px;
   width: 250px;
   font-size: 18px;
-
 }
 
 #next{
@@ -235,10 +168,6 @@ input{
 .fighters{
   display: none;
   align-items: center;
-}
-
-.fighters > p{
-  align-self: stretch;
 }
 
 [class^='player']{
@@ -254,29 +183,22 @@ input{
     float: left;
     margin: 10px;
   }
-  h4{
-    margin: 5px;
-    font-size: 16px;
+  h5{
+    margin-left: 5px;
+    text-align: left;
   }
 }
 
 
 
 [class^="attack"] {
-  border-radius: 15px;
-  background-image: linear-gradient(
-      #e5f1e3, #a5acb1
-    );
-  float: left;
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  margin-right: 0;
-  // position: absolute;
-  // bottom: 100px;
-  // left: 80px;
+  @extend .flexed;
+  flex-direction: row;
+  margin: 10px;
   height: 80px;
-  width: 150px;
+  position: relative;
+  bottom: 10px;
+  left: 10px;
   h4{
     text-align: left;
     position: absolute;
@@ -289,11 +211,6 @@ input{
   }
 }
 
-[class^="attack"]:hover{
-  background-image: linear-gradient(
-      #a5acb1, #e5f1e3
-    );
-}
 .removeBackground{
   background: none;
 }
@@ -309,64 +226,8 @@ box-shadow : none;
 border: none;
 }
 
-.gameOver {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  h4{
-    font-size: 100px;
-    text-align: center;
-    color: white;
-  }
-  h5{
-    text-align: center;
-    font-size: 50px;
-    color: white;
-  }
-}
 
-.restartChoice{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  button:hover a{
-    color: #35635b;
-  }
-  a{
-    color: white;
-    text-decoration: none;
-  }
-  a:hover{
-    color: #35635b;
-  }
-}
-
-.gameOver *{
-  z-index: 2;
-}
-
-.gameOver::after{
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  opacity: 0.85;
-  z-index: 1;
-  background-color: grey;
-
-}
-
-
-.gameStart {
+.gameStart, .gameOver {
   position: fixed;
   top: 0;
   right: 0;
@@ -395,6 +256,40 @@ border: none;
   }
 }
 
+.restartChoice{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  button:hover a{
+    color: #35635b;
+  }
+  a{
+    color: white;
+    text-decoration: none;
+  }
+  a:hover{
+    color: #35635b;
+  }
+}
+
+.gameOver *{
+  z-index: 2;
+}
+
+.gameOver::after, .gameStart::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.85;
+  z-index: 1;
+  background-color: #353940;
+
+}
+
 .beginChoice{
   display: flex;
   flex-direction: column;
@@ -406,17 +301,10 @@ border: none;
   z-index: 2;
 }
 
-.gameStart::after{
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  opacity: 0.95;
-  z-index: 1;
-  background-color: grey;
-
+.gu-unselectable{
+  button{
+    display: none;
+  }
 }
 
 .hidden{
