@@ -7,6 +7,13 @@ $active-charmarg: 20px;
 $base-font-size: 10px;
 $button-colors: #894389;
 
+.fourcorners{
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .flexed{
   display: flex;
   align-items: center;
@@ -229,10 +236,7 @@ border: none;
 
 .gameStart, .gameOver {
   position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+  @extend .fourcorners;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -280,21 +284,15 @@ border: none;
 .gameOver::after, .gameStart::after{
   content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  opacity: 0.85;
+  @extend .fourcorners;
+  opacity: 0.9;
   z-index: 1;
   background-color: #353940;
 
 }
 
 .beginChoice{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+  @extend .flexed;
 }
 
 .gameStart *{

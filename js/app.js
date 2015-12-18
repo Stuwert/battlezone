@@ -63,7 +63,9 @@ function addToPartySingle(num){
     $('#player1').addClass("turn");
   }
   var input = $('input').val();
-  var parameterz = {  query: input  }
+  var randomNum = +(Math.random() * 50).toFixed(0);
+  console.log(randomNum);
+  var parameterz = {  query: input, page: randomNum  }
   tmdb.call("/person/popular", parameterz, responseSingle, failure);
 
   function responseSingle(response){
@@ -79,6 +81,12 @@ function addToPartySingle(num){
     renderer("player2", num);
   }
 }
+
+function populateActor(info){
+
+}
+
+
 
 function callFight(){
   var chars1 = returnActiveChar(gameObj["player1"]);
