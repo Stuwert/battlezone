@@ -1,7 +1,8 @@
 var state = "fresh";
+var gameType;
 
 $(document).ready(function(){
-  $(document).on("keydown", "input", addToParty);
+  gameTypeCheck();
   $('.player1').on('click', '[class^="attack"]', selectAttack);
   $('.player2').on('click', '[class^="attack"]', selectAttack);
   $('#real').on('click', 'button', addToParty);
@@ -9,6 +10,75 @@ $(document).ready(function(){
     callVerb(i);
   }
 })
+
+function gameTypeCheck(){
+  $('.gameStart').on("click", "button", function(){
+    gameType = $(this).attr('id');
+    $('.gameStart').addClass('hidden');
+    if (gameType === "multi"){
+      $(document).on("keydown", "input", addToParty);
+    }else{
+      gameObj["player2"] = {1: null, 2: null, 3: null}
+      for (var i = 1; i<=3; i++){
+        addToPartySingle(i);
+      }
+      $(document).on("keydown", "input", addToYourParty)
+    }
+  })
+}
+
+function addToYourParty(key){
+  if(state === "fresh"){
+    state = "stale";
+    $('#player1').addClass("turn");
+  }
+  var input = $('input').val();
+  if (key.keyCode === 13){
+    var parameterz = {  query: input  }
+    tmdb.call("/search/person", parameterz, responsesYours, failure);
+    $('input').val("")
+    console.log(nextAvailable(gameObj["player1"]))
+
+  }
+
+  function responsesYours(response){
+    var actor = response["results"][0];
+    var movie0 = actor["known_for"][0];
+    var movie1 = actor["known_for"][1]
+    var actorArmor = 0;
+    actor["known_for"].forEach(function(item){
+      actorArmor += item["vote_average"];
+    })
+    var inputz = nextAvailable(gameObj[turnstatus]);
+    console.log(inputz);
+    gameObj["player1"][inputz] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
+    renderer("player1", inputz);
+    singleFullCheck();
+  }
+}
+
+function addToPartySingle(num){
+  if(state === "fresh"){
+    state = "stale";
+    $('#player1').addClass("turn");
+  }
+  var input = $('input').val();
+  var parameterz = {  query: input  }
+  tmdb.call("/person/popular", parameterz, responseSingle, failure);
+
+  function responseSingle(response){
+    var actor = response["results"][num];
+    var movie0 = actor["known_for"][0];
+    var movie1 = actor["known_for"][1]
+    var actorArmor = 0;
+    actor["known_for"].forEach(function(item){
+      actorArmor += item["vote_average"];
+    })
+    var inputz = nextAvailable(gameObj[turnstatus]);
+    gameObj["player2"][num] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
+    renderer("player2", num);
+  }
+}
 
 function callFight(){
   var chars1 = returnActiveChar(gameObj["player1"]);
@@ -86,6 +156,23 @@ function response(response){
 
 function failure(){
   console.log("Stuart is Sad.")
+}
+
+function singleFullCheck(){
+  if(nextAvailable(gameObj["player1"]) === null){
+    $('.fighters').css({"display" : "flex"});
+    $('input').css({"display" : "none"});
+    $('#real').html("Fight");
+    $('.display').animate({"height" : "100px"});
+    $('.display').empty();
+    $('.display').append("<p>Select your Fighters and Attacks</p>")
+    $('.display').find('p').css({"font-size" : "18px"})
+    $('.bench').removeClass('turn');
+    activate("player1");
+    activate("player2");
+    $('#real').addClass("offButton");
+    $('#real').off('click');
+  }
 }
 
 function fullCheck(){
