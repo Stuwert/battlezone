@@ -9,7 +9,7 @@ var player1score = 0;
 var player2score = 0;
 var turnstatus = "player1";
 var gameObj = {
-  "player1" : {1:null, 2: null  },
+  "player1" : {1:null, 2: null },
   "player2" : {1:null, 2: null }
 }
 var i = 0;
