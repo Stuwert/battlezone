@@ -9,8 +9,8 @@ var player1score = 0;
 var player2score = 0;
 var turnstatus = "player1";
 var gameObj = {
-  "player1" : {1:null, 2: null, 3: null  },
-  "player2" : {1:null, 2: null, 3: null }
+  "player1" : {1:null, 2: null  },
+  "player2" : {1:null, 2: null }
 }
 var i = 0;
 var wordArray = [];
@@ -157,9 +157,9 @@ function resetCheck(){
   if (isAlive(gameObj["player1"]) && isAlive(gameObj["player2"])){
     $('#real').off("click");
     $('#real').html("Next Battle");
-    $('#real').click(function(){
-      activate("player1");
-      activate("player2");
+    $('#real').on("click", function(){
+      // activate("player1");
+      // activate("player2");
       $('[class^="player"]').empty();
       $('#real').off("click");
       $('#real').html("Fight");

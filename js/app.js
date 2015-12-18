@@ -163,6 +163,7 @@ function selectToFight(){
 
 
 function activate(player){
+  console.log(player);
   dragula(dragInto(player),{
    copy: true,
    invalid: function(el){
