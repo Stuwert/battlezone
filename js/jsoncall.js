@@ -1,7 +1,7 @@
 (function() {
 	window.tmdb = {
 		"api_key": "7fb22e55a5bafa415e02fe8d426ad2f9",
-		"base_uri": "http://api.themoviedb.org/3",
+		"base_uri": "https://api.themoviedb.org/3",
 		"images_uri": "http://image.tmdb.org/t/p",
 		"timeout": 5000,
 		call: function(url, params, success, error){

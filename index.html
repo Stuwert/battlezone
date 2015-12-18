@@ -12,54 +12,55 @@
       <h1>Actor Battle</h1>
       <section>
 
-        <div class="hidden" id="printout"></div>
 
-        <div class="fighters">
-          <div class="player1">
-            <h2>Player 1 Fighter</h2>
+        <div class="display">
+              <p>Select actors/actresses for your team:</p>
+              </div>
+              <input type="text" name="name" placeholder="Who will battle with you">
+              <button id="real" type="" name="button">Select</button>
+              <div class="fighters">
+                <div>
+                  <h2>Player 1 Champion</h2>
+                    <div class="player1">
 
-          </div>
-          <div class="player2">
-            <h2>Player 2 Fighter</h2>
+                    </div>
+                </div>
+                  <div>
+                    <h2>Player 2 Champion</h2>
+                    <div class="player2">
 
-          </div>
-        </div>
+                    </div>
+                  </div>
 
-        <div class="input">
-          <div class="" id="populatebench">
-            <h4>Player 1, Choose Actor/Actress 1 for your team.</h4>
-            <input type="text" name="name" value="" >
 
-          </div>
-          <div id="playerselect">
-            <p class="hidden">
-              Select Your Characters to Battle
-            </p>
-          </div>
-          <div id="fight">
-            <p class="hidden">
-              Select your attacks.
-            </p>
-            <button class="hidden">Fight</button>
-          </div>
-        </div>
+              </div>
 
 
       </section>
     </main>
     <section class="background" name="">
       <section id="player1" class="bench turn" >
-        <h3>Player 1</h3>
-        <p>
-          Score:
-        </p>
+        <div>
+          <h3>Player 1</h3>
+          <p>
+            Score:
+          </p>
+        </div>
+        <div class="characters">
+
+        </div>
 
       </section>
       <section id="player2" class="bench" >
-        <h3>Player 2</h3>
-        <p>
-          Score:
-        </p>
+        <div>
+          <h3>Player 2</h3>
+          <p>
+            Score:
+          </p>
+        </div>
+        <div class="characters">
+
+        </div>
 
       </section>
     </section>
@@ -69,6 +70,18 @@
       </p>
       <img height="40" src="https://assets.tmdb.org/images/logos/var_5_0_tmdb-logo-1Line-GreenGradient-Bree.png" alt="" />
     </footer>
+    <div class="gameOver hidden">
+      <h4>Game Over</h4>
+      <div class="restartChoice">
+        <p>
+          Ready to Restart?
+        </p>
+        <div class="buttonz">
+          <button id="restart" type="button" name="button"><a href="index.html">Yup</a></button>
+          <button id="close" type="button" name="button">Nope</button>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript" src="js/jsoncall.js"></script>
     <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>

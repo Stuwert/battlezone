@@ -1,27 +1,34 @@
-var i = 0;
-var h = 0;
-var gameObj = {};
 var attackstatus = {
   player1: null,
   player2: null
 }
+var player1attacktotal = 0;
+var player2attacktotal = 0;
+var turnNum = 0;
 var player1score = 0;
 var player2score = 0;
+var turnstatus = "player1";
+var gameObj = {
+  "player1" : {1:null, 2: null, 3: null  },
+  "player2" : {1:null, 2: null, 3: null }
+}
+var i = 0;
+var wordArray = [];
+
 
 
 function fightLoop(character1, character2){
+  player1attacktotal++;
+  player2attacktotal++;
+  turnNum++;
   var char1pop = attackstatus["player1"].popularity/attackstatus["player2"].popularity;
   var char2pop = 1/char1pop;
-  var character1Damage = damageDealt(damageMultiplier(attackstatus["player2"].attack, char2pop), character1.armor);
-  var character2Damage = damageDealt(damageMultiplier(attackstatus["player1"].attack, char1pop), character1.armor);
-  calculateHealth(character1, character1Damage);
-  calculateHealth(character2, character2Damage);
-  printScreen(character1, character2Damage, character2, character1Damage);
-  var winner = detectWinner(character1, character2);
+  calculateHealth(character1, damageDealt(damageMultiplier(attackstatus["player2"].attack, char2pop), character1.armor));
+  calculateHealth(character2, damageDealt(damageMultiplier(attackstatus["player1"].attack, char1pop), character1.armor));
+  // printScreen(character1, character2Damage, character2, character1Damage);
+  var winner = fightWinner(character1, character2);
   if (!winner){
     fightLoop(character1, character2);
-  }else{
-    console.log(winner);
   }
 }
 
@@ -33,55 +40,39 @@ function returnActiveChar(player){
   }
 }
 
-function printScreen(character1, characater1dam, character2, character2dam){
-  $('#printout').append('<p>' + character1.name + ' dealt ' + characater1dam + " to " + character2.name + ", + " + character2.name + " is at " + character2.health + " life.")
-  $('#printout').append('<p>' + character2.name + ' dealt ' + character2dam + " to " + character1.name + ", + " + character1.name + " is at " + character1.health + " life.")
-}
 
-// function printScreen(dam1, dam2){
-//   var character1 = gameObj.char1;
-//   var character2 = gameObj.char2;
-//   var damage1 = game.add.text(20, 20 * h, character2.name + " dealt " + dam1 + " damage to " + character1.name, {font: "14px Arial", fill: "white"});
-//   h++;
-//   var charhealth1 = game.add.text(20, 20 * h, character1.name + " is at " + character1.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
-//   h++;
-//   var damage2 = game.add.text(20, 20 * h, character1.name + "dealt " + dam2 + " damage to " + character2.name, {font: "14px Arial", fill: "white" })
-//   h++;
-//   var charhealth2 = game.add.text(20, 20 * h, character2.name + " is at " + character2.health.toFixed(0) + " health.", {font: "14px Arial", fill: "white"})
-//   h++;
-// }
 
-function detectWinner(character1, character2){
+function fightWinner(character1, character2){
+  var winningchar;
+  var losingchar;
   if (character1.status === "fainted" && character2.status === "fainted"){
     removePlayer("player1")
     removePlayer("player2")
-    hideFightButton();
-    checkForWinner();
-    return "No One";
+    winningchar =  "No One";
   }else if (character1.status === "fainted"){
     removePlayer("player1")
-    hideFightButton();
-    checkForWinner();
     player2score++;
-    printScore();
-    return character2.name;
+    winningchar = character2.name;
+    losingchar = character1.name;
   }else if (character2.status === "fainted"){
     removePlayer("player2");
-    hideFightButton();
-    checkForWinner();
     player1score++;
-    printScore();
-    return character1.name;
+    winningchar = character1.name;
+    losingchar = character2.name;
   }else{
-    return false;
+    winningchar = false;
   }
+  if(winningchar !== false){
+    printWinningInfo(winningchar, losingchar);
+    resetCheck();
+  }
+  hideFightButton();
+  checkForWinner();
+  fightToSelect();
+  return winningchar;
 }
 
-function removePlayer(charname){
-  var num = $("." + charname).children('div').attr('class');
-  $("#" + charname).find('[class="'+ num+'"]').addClass('fainted');
-  $('.' + charname).empty();
-}
+
 
 function damageDealt(attack, armor){
   if (armor > attack){
@@ -134,12 +125,62 @@ function characterReady(player){
 function checkForWinner(){
   var player1stats = characterReady(gameObj["player1"]);
   var player2stats = characterReady(gameObj["player2"]);
-  console.log(player1stats, player2stats);
   if (player1stats && !player2stats){
     printOutcome("Player 1 Wins");
   }else if(player2stats && !player1stats){
       printOutcome("Player 2 Wins");
   }else if (!player1stats && !player2stats){
     printOutcome("No One Wins");
+  }
+}
+
+function isActive(player){
+  for (var fighters in player){
+    if(player[fighters].status === "active"){
+      return true;
+    }
+  }
+  return false;
+}
+
+function isAlive(player){
+  for (var fighters in player){
+    console.log(player[fighters].status);
+    if(player[fighters].status === "active" || player[fighters].status === "bench"){
+      return true;
+    }
+  }
+  return false;
+}
+
+function resetCheck(){
+  if (isAlive(gameObj["player1"]) && isAlive(gameObj["player2"])){
+    $('#real').off("click");
+    $('#real').html("Next Battle");
+    $('#real').click(function(){
+      activate("player1");
+      activate("player2");
+      $('[class^="player"]').empty();
+      $('#real').off("click");
+      $('#real').html("Fight");
+      $('#real').addClass('offButton');
+      attackstatus = { "player1" : null, "player2" : null}
+    })
+  }else{
+    if(isAlive(gameObj["player1"])){
+      console.log("Player1")
+      $('.gameOver').find('h4').after('<h5>Player 1 Wins</h5>')
+    }else if(isAlive(gameObj["player2"])){
+      console.log("Player1")
+      $('.gameOver').find('h4').after('<h5>Player 2 Wins</h5>')
+    }else{
+      $('.gameOver').find('h4').after('<h5>No One Wins</h5>')
+    }
+    $("#real").addClass('hidden');
+    $('.gameOver').removeClass('hidden');
+    $('#close').click(function(){
+      $('.gameOver').find('h4').html("Thanks for Playing!");
+      $('.restartChoice').empty();
+    });
   }
 }

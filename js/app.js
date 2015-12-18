@@ -1,31 +1,29 @@
-// dragula([document.querySelector(".player1"), document.querySelector(".player2")]);
-var turnstatus = "player1";
-
-
-var gameObj = {
-  "player1" : {1:null, 2: null },
-  "player2" : {1:null, 2: null }
-}
-
-
 $(document).ready(function(){
   $(document).on("keydown", "input", addToParty);
   $('.player1').on('click', '[class^="attack"]', selectAttack);
   $('.player2').on('click', '[class^="attack"]', selectAttack);
-  $('.input').on('click', 'button', function(){
-    var chars1 = returnActiveChar(gameObj["player1"]);
-    var chars2 = returnActiveChar(gameObj["player2"]);
-    fightLoop(chars1, chars2);
-  })
+  $('#real').on('click', 'button', addToParty);
+  for (var i=0; i<10; i++){
+    callVerb(i);
+  }
 })
+
+function callFight(){
+  var chars1 = returnActiveChar(gameObj["player1"]);
+  var chars2 = returnActiveChar(gameObj["player2"]);
+  player1attacktotal = 0;
+  player2attacktotal = 0;
+  turnNum = 0
+  fightLoop(chars1, chars2);
+}
 
 function selectAttack(){
   $(this).css({"opacity" : "0.5"});
   $(this).siblings().css({"opacity" : 1});
   var attacknum = $(this).attr('class');
   var playerchar = $(this).parent().parent().attr('class');
-  var playernum = $(this).parent().parent().parent().attr('class');
-  attackstatus[playernum] = gameObj[playernum][playerchar][attacknum];
+  var playernum = $(this).parent().attr('class');
+  attackstatus[playerchar] = gameObj[playerchar][playernum][attacknum];
   revealFightButton();
 }
 
@@ -35,10 +33,12 @@ function revealFightButton(){
       return;
     }
   }
-  $('.input').animate({"height" : "50", "width" : "200"}, 500);
-  $('#printout').removeClass('hidden');
-  $('#fight').find('p').addClass('hidden');
-  $('#fight').find('button').removeClass('hidden');
+  $('#real').removeClass("offButton");
+  $('#real').click(callFight)
+  // $('.input').animate({"height" : "50", "width" : "200"}, 500);
+  // $('#printout').removeClass('hidden');
+  // $('#fight').find('p').addClass('hidden');
+  // $('#fight').find('button').removeClass('hidden');
 }
 
 function hideFightButton(){
@@ -48,34 +48,38 @@ function hideFightButton(){
 
 }
 
+function removePlayer(charname){
+  var num = $("." + charname).children('div').attr('class');
+  $("#" + charname).find('[class="'+ num+'"]').addClass('fainted');
+  $('.' + charname).empty();
+}
+
 function addToParty(key){
   var input = $('input').val();
   if (key.keyCode === 13){
-    var parameterz = {
-      query: input
-    }
+    var parameterz = {  query: input  }
     tmdb.call("/search/person", parameterz, response, failure);
   }
 
-  function response(response){
-    var actor = response["results"][0];
-    var movie0 = actor["known_for"][0];
-    var movie1 = actor["known_for"][1]
-    var actorArmor = 0;
-    actor["known_for"].forEach(function(item){
-      actorArmor += item["vote_average"];
-    })
-    var inputz = nextAvailable(gameObj[turnstatus]);
-    gameObj[turnstatus][inputz] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
-    renderer(turnstatus, inputz);
-    $('input').val("")
-    fullCheck();
-  }
+}
 
-  function failure(){
-    console.log("Stuart is Sad.")
-  }
+function response(response){
+  var actor = response["results"][0];
+  var movie0 = actor["known_for"][0];
+  var movie1 = actor["known_for"][1]
+  var actorArmor = 0;
+  actor["known_for"].forEach(function(item){
+    actorArmor += item["vote_average"];
+  })
+  var inputz = nextAvailable(gameObj[turnstatus]);
+  gameObj[turnstatus][inputz] = new newGameObj(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
+  renderer(turnstatus, inputz);
+  $('input').val("")
+  fullCheck();
+}
 
+function failure(){
+  console.log("Stuart is Sad.")
 }
 
 function fullCheck(){
@@ -83,12 +87,18 @@ function fullCheck(){
     if(turnstatus === "player1"){
       switchTurn();
     }else{
-      $('#playerselect').removeClass('hidden');
-      $('#playerselect').children().removeClass('hidden');
-      $('#populatebench').children().addClass('hidden');
-      $('#populatebench').addClass('hidden');
+      $('.fighters').css({"display" : "flex"});
+      $('input').css({"display" : "none"});
+      $('#real').html("Fight");
+      $('.display').animate({"height" : "100px"});
+      $('.display').empty();
+      $('.display').append("<p>Select your Fighters and Attacks</p>")
+      $('.display').find('p').css({"font-size" : "18px"})
       $('.bench').removeClass('turn');
-      activateDragging();
+      activate("player1");
+      activate("player2");
+      $('#real').addClass("offButton");
+      $('#real').off('click');
     }
   }else{
     switchTurn();
@@ -120,92 +130,60 @@ function nextAvailable(playerobj){
 
 function renderer(inputName, divClass){
   var obj = gameObj[inputName][divClass]
-  var printTo = $('<div class="'+ divClass + '"></div>').appendTo("#" + inputName);
+  var findBench = $('#' + inputName).find('.characters');
+  var printTo = $('<div class="'+ divClass + '"></div>').appendTo(findBench);
   $(printTo).append('<h4>' + obj.name + '</h4>');
   $(printTo).append('<img width="100" height="150" src="'+obj.img+'"/>');
-  $(printTo).append('<div class="posters"></div>')
-  $(printTo).find('.posters').append('<img class="attack1" width="55" height="80" src="'+obj.attack1.img+'"/>')
-  $(printTo).find('.attack1').before('<p>Attack1</p>');
-  $(printTo).find('.posters').append('<img class="attack2" width="55" height="80" src="'+obj.attack2.img+'"/>')
-  $(printTo).find('.attack2').before('<p>Attack2</p>');
+  $(printTo).append('<div class="attack1"></div>')
+  $(printTo).find('.attack1').append('<p>Attack 1</p>');
+  $(printTo).find('.attack1').append('<img width="55" height="80" src="'+obj.attack1.img+'"/>')
+  $(printTo).append('<div class="attack2"></div>')
+  $(printTo).find('.attack2').append('<p>Attack 2</p>');
+  $(printTo).find('.attack2').append('<img width="55" height="80" src="'+obj.attack2.img+'"/>')
 
 }
 
-function activateDragging(){
-  var player1draginto = dragula([document.querySelector("#player1"), document.querySelector(".player1")],{
-    copy: true,
-    invalid: function (el){
-      return el.className.includes("fainted");
-    }
-  });
-  var player1dragoutof = dragula([document.querySelector(".player1")], {
-    removeOnSpill: true
-  });
-
-  player1draginto.on("drop", function(el){
-    gameObj["player1"][+(el.className[0])].status = "active";
-    if(activeCheck()){
-      $('#playerselect').addClass('hidden');
-      $('#playerselect').children().addClass('hidden');
-      $('#fight').removeClass('hidden');
-      $('#fight').find('p').removeClass('hidden');
-    }
-  })
-
-  player1dragoutof.on("remove", function(el){
-    gameObj["player1"][+(el.className[0])].status = "bench";
-    $('#playerselect').removeClass('hidden');
-    $('#playerselect').children().removeClass('hidden');
-    $('#fight').addClass('hidden');
-    $('#fight').children().addClass('hidden');
-  })
-
-  var player2draginto = dragula([document.querySelector("#player2"), document.querySelector(".player2")],{
-    copy: true,
-    invalid: function (el){
-      return el.className.includes("fainted");
-    }
-
-  });
-
-  var player2dragoutof = dragula([document.querySelector(".player2")], {
-    removeOnSpill: true
-  });
-
-  player2draginto.on("drop", function(el){
-    gameObj["player2"][+(el.className[0])].status = "active";
-    if(activeCheck()){
-      $('#playerselect').addClass('hidden');
-      $('#playerselect').children().addClass('hidden');
-      $('#fight').removeClass('hidden');
-      $('#fight').find('p').removeClass('hidden');
-    }
-  })
-
-  player2dragoutof.on("remove", function(el){
-    gameObj["player2"][+(el.className[0])].status = "bench";
-    $('#playerselect').removeClass('hidden');
-    $('#playerselect').children().removeClass('hidden');
-    $('#fight').addClass('hidden');
-    $('#fight').children().addClass('hidden');
-  })
-
+function dragInto(player){
+  return [document.getElementById(player).getElementsByClassName('characters')[0], document.querySelector("." + player)];
 }
 
-function activeCheck(){
-  var activeOne = isActive(gameObj["player1"]);
-  var activeTwo = isActive(gameObj["player2"]);
-  return activeOne && activeTwo ? true : false;
-
+function dragOutOf(player){
+  return [document.querySelector("." + player)];
 }
 
-function isActive(player){
-  for (var fighters in player){
-    if(player[fighters].status === "active"){
-      return true;
-    }
+
+function selectToFight(){
+  if(isActive("player1") && isActive("player2")){
+    $('#playerselect').addClass('hidden');
+    $('#playerselect').children().addClass('hidden');
+    $('#fight').removeClass('hidden');
+    $('#fight').find('p').removeClass('hidden');
   }
-  return false;
+}
+
+
+function activate(player){
+  dragula(dragInto(player),{
+   copy: true,
+   invalid: function(el){
+     return el.className.includes("fainted");
+   }}).on("drop", function(el){
+    gameObj[player][+(el.className[0])].status = "active";
+    selectToFight();
+  });
+ dragula(dragOutOf(player), {
+   removeOnSpill: true
+ }).on("remove", function(el){
+    gameObj[player][+(el.className[0])].status = "bench";
+    fightToSelect();
+  })
+}
+
+function fightToSelect(){
+  $('#playerselect').removeClass('hidden');
+  $('#playerselect').children().removeClass('hidden');
+  $('#fight').addClass('hidden');
+  $('#fight').children().addClass('hidden');
 }
 
 function printScore(){
@@ -217,4 +195,32 @@ function printScore(){
 function printOutcome(outcome){
   $('.input').empty();
   $('.input').append('<p>'+ outcome +'</p>')
+}
+
+function callVerb (i){
+  var callar = $.ajax({
+    url: 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=350&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=1&api_key=97d94b0b7779a50ac900e04879302f1c70b3d0fa7b6102f20',
+    method: "GET",
+    dataType: "json"
+  })
+  callar.done(function(response){
+    wordArray[i] = response["word"]
+  })
+  callar.fail(function(response){
+    console.log("Sad " + response);
+  })
+
+}
+
+function printWinningInfo(winningchar, losingchar){
+  $('#player1').find('p').first().html("Score " + player1score)
+  $('#player2').find('p').first().html("Score " + player2score)
+  $('.display').empty();
+  $('.display').animate({"height": "300px"}, 500);
+  $('.display').append('<p>' + winningchar + ' wins.</p>');
+
+  if (winningchar !== "No One"){
+    $('.display').append('<p>' + winningchar + ' ' + wordArray[i] + ' ' + losingchar + ' ' + turnNum + ' times until ' + losingchar + ' fainted </p>');
+    i++;
+  }
 }
