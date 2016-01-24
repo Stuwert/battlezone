@@ -1,0 +1,2 @@
+- Add check to see if player already exists
+- 

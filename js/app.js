@@ -1,8 +1,7 @@
 var state = "fresh";
-var gameType;
 
 $(document).ready(function(){
-  gameTypeCheck();
+  $('.gameStart').on('click', 'button', gameTypeCheck);
   $('.player1').on('click', '[class^="attack"]', selectAttack);
   $('.player2').on('click', '[class^="attack"]', selectAttack);
   $('#real').on('click', 'button', addToParty);
@@ -12,19 +11,18 @@ $(document).ready(function(){
 })
 
 function gameTypeCheck(){
-  $('.gameStart').on("click", "button", function(){
-    gameType = $(this).attr('id');
-    $('.gameStart').addClass('hidden');
-    if (gameType === "multi"){
-      $(document).on("keydown", "input", addToParty);
-    }else{
-      gameObj["player2"] = {1: null, 2: null, 3: null}
-      for (var i = 1; i<=3; i++){
-        addToPartySingle(i);
-      }
-      $(document).on("keydown", "input", addToYourParty)
+  //Allows the player to select a single or multiplayer game
+  var gameType = $(this).attr('id');
+  $('.gameStart').addClass('hidden');
+  if (gameType === "multi"){
+    $(document).on("keydown", "input", addToParty);
+  }else{
+    gameObj["player2"] = {1: null, 2: null, 3: null}
+    for (var i = 1; i<=3; i++){
+      addToPartySingle(i);
     }
-  })
+    $(document).on("keydown", "input", addToYourParty)
+  }
 }
 
 function addToYourParty(key){
@@ -115,10 +113,6 @@ function revealFightButton(){
   }
   $('#real').removeClass("offButton");
   $('#real').click(callFight)
-  // $('.input').animate({"height" : "50", "width" : "200"}, 500);
-  // $('#printout').removeClass('hidden');
-  // $('#fight').find('p').addClass('hidden');
-  // $('#fight').find('button').removeClass('hidden');
 }
 
 function hideFightButton(){
@@ -243,7 +237,6 @@ function renderer(inputName, divClass){
   $(printTo).append('<button class="attack2"></button>')
   $(printTo).find('.attack2').append('<p>Attack 2</p>');
   $(printTo).find('.attack2').append('<img width="35" height="60" src="'+obj.attack2.img+'"/>')
-
 }
 
 function dragInto(player){
@@ -266,7 +259,6 @@ function selectToFight(){
 
 
 function activate(player){
-  console.log(player);
   dragula(dragInto(player),{
    copy: true,
    invalid: function(el){

@@ -104,7 +104,6 @@ function calculateHealth(char, attackDamage){
 function newGameObj(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
   this.name = name;
   this.armor = armor > 50 ? armor / 3 : armor * 1.5;
-  console.log(this.armor);
   this.popularity = actorpopularity;
   this.status = "bench";
   this.health = 500;
@@ -145,7 +144,6 @@ function isActive(player){
 
 function isAlive(player){
   for (var fighters in player){
-    console.log(player[fighters].status);
     if(player[fighters].status === "active" || player[fighters].status === "bench"){
       return true;
     }
