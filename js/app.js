@@ -2,12 +2,12 @@ var state = "fresh";
 
 $(document).ready(function(){
   $('.gameStart').on('click', 'button', gameTypeCheck);
+
   $('.player1').on('click', '[class^="attack"]', selectAttack);
   $('.player2').on('click', '[class^="attack"]', selectAttack);
+
   $('#real').on('click', 'button', addToParty);
-  for (var i=0; i<10; i++){
-    callVerb(i);
-  }
+  callVerb(10);
 })
 
 function gameTypeCheck(){
@@ -294,18 +294,20 @@ function printOutcome(outcome){
 }
 
 function callVerb (i){
-  var callar = $.ajax({
-    url: 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=350&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=1&api_key=97d94b0b7779a50ac900e04879302f1c70b3d0fa7b6102f20',
-    method: "GET",
-    dataType: "json"
-  })
-  callar.done(function(response){
-    wordArray[i] = response["word"]
-  })
-  callar.fail(function(response){
-    console.log("Sad ");
-    wordArray = shuffle(backupArray);
-  })
+  if (i > 0){
+    var callar = $.ajax({
+      url: 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=350&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=1&api_key=97d94b0b7779a50ac900e04879302f1c70b3d0fa7b6102f20',
+      method: "GET",
+      dataType: "json"
+    })
+    callar.done(function(response){
+      wordArray.push(response['word'])
+    })
+    callar.fail(function(response){
+      wordArray = shuffle(backupArray);
+    })
+    callVerb(i - 1)
+  }
 
 }
 
